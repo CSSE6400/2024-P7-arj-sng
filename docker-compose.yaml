@@ -24,10 +24,13 @@ services:
       - ./todo:/app/todo
     environment:
       SQLALCHEMY_DATABASE_URI: postgresql://administrator:verySecretPassword@database:5432/todo
+      CELERY_BROKER_URL: redis://redis:6379 
+      CELERY_RESULT_BACKEND: redis://redis:6379
     ports:
-      - "6400:6400"
+      - "6400:6400" 
     depends_on:
       - database
+      - redis
 
   worker:
     build: 
@@ -38,4 +41,6 @@ services:
       CELERY_BROKER_URL: redis://redis:6379 
       CELERY_RESULT_BACKEND: redis://redis:6379 
     command: poetry run celery --app todo.tasks.ical worker --loglevel=info
+    depends_on:
+      - redis
 
