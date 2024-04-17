@@ -110,7 +110,7 @@ def create_ical():
     todos = Todo.query.order_by(Todo.created_at.desc()).all()
     todo_input = []
     for todo in todos:
-        todo_input.apped(todo.to_dict())
+        todo_input.append(todo.to_dict())
 
     task = ical.create_ical.delay(todo_input)
 
